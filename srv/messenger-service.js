@@ -32,7 +32,7 @@ module.exports = class MessengerService extends cds.ApplicationService {
                 ? items.map(i => i.product).join(', ') 
                 : "No products found";
 
-            const orderLink = `http://localhost:4004/$fiori-preview/MessengerService/S_Orders#preview-app&/?sap-iapp-state=TASM6A6GW9KADTQBGDFPE55AEULRVATKUXLOVVA95`;
+            const orderLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/$fiori-preview/MessengerService/S_Orders#preview-app&/?sap-iapp-state=TASRLFV8483TVFARHX5J7JWVNQHY9KI74SBXHWZJV`;
 
             const mailOptions = {
                 from: '"KAUFLAND Service" <elperperidou@gmail.com>',
