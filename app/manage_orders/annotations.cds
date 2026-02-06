@@ -1,0 +1,1 @@
+using MessengerService as service from '../../srv/messenger-service';

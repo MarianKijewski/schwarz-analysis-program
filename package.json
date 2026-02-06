@@ -11,10 +11,12 @@
   },
   "devDependencies": {
     "@cap-js/sqlite": "^1.11.1",
-    "@sap/cds-dk": "^8"
+    "@sap/cds-dk": "^8",
+    "cds-plugin-ui5": "^0.13.0"
   },
   "scripts": {
-    "start": "cds-serve"
+    "start": "cds-serve",
+    "watch-manage_orders": "cds watch --open manageorders/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "cds": {
     "requires": {
@@ -26,5 +28,11 @@
       }
     }
   },
-  "private": true
+  "private": true,
+  "workspaces": [
+    "app/*"
+  ],
+  "sapux": [
+    "app/manage_orders"
+  ]
 }
