@@ -1,4 +1,4 @@
 ID;name;email;phone;company;status
-11111111-1111-1111-1111-111111111111;Acme Supplies Inc;contact@acme-supplies.com;+1-555-0101;Acme Supplies Inc;Active
-22222222-2222-2222-2222-222222222222;Global Parts Ltd;ntinosmak@gmail.com;+1-555-0102;Global Parts Ltd;Active
-33333333-3333-3333-3333-333333333333;Premium Suppliers Co;info@premiumsuppliers.com;+1-555-0103;Premium Suppliers Co;Active
+101;Acme Supplies Inc;ntinosmak@gmail.com;+1-555-0101;Acme Supplies Inc;Active
+102;Global Parts Ltd;info@globalparts.com;+1-555-0102;Global Parts Ltd;Active
+103;Premium Suppliers Co;info@premium.com;+1-555-0103;Premium Suppliers Co;Active
