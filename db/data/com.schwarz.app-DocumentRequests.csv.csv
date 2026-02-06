@@ -1,0 +1,6 @@
+ID;requestNumber;description;pageCount;extractionConfidence;requestDate;status;supplier_ID
+a001;REQ-2024-001;Invoice: Q1 Office Supplies;5;99.50;2024-01-10T09:00:00Z;Pending;101
+a002;REQ-2024-002;Delivery Note: Server Rack;2;85.00;2024-01-12T14:30:00Z;Pending;101
+a003;REQ-2024-003;Contract: Cleaning Service;12;60.00;2024-01-15T10:00:00Z;Pending;102
+a004;REQ-2024-004;Receipt: Team Lunch;1;45.50;2024-01-18T12:00:00Z;Rejected;103
+a005;REQ-2024-005;Audit Report 2023;150;99.90;2024-01-20T16:00:00Z;Confirmed;102

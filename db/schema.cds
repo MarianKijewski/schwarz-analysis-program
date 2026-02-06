@@ -10,7 +10,7 @@ entity Suppliers : cuid, managed {
   company     : String(100);
   status      : String(20) default 'Active';
   emails      : Association to many Emails on emails.supplier = $self;
-  orders      : Association to many Orders on orders.supplier = $self;
+  requests    : Association to many DocumentRequests on requests.supplier = $self;
 }
 
 // Provider entity
@@ -21,7 +21,7 @@ entity Providers : cuid, managed {
   company     : String(100);
   status      : String(20) default 'Active';
   emails      : Association to many Emails on emails.provider = $self;
-  orders      : Association to many Orders on orders.provider = $self;
+  requests    : Association to many DocumentRequests on requests.provider = $self;
 }
 
 // Email tracking entity
@@ -34,40 +34,37 @@ entity Emails : cuid, managed {
   sender      : String(100);
   supplier    : Association to Suppliers;
   provider    : Association to Providers;
-  order       : Association to Orders;
+  request     : Association to DocumentRequests;
 }
 
-// Order entity
-entity Orders : cuid, managed {
-  orderNumber : String(50) @mandatory;
-  description : String(500);
-  quantity    : Integer;
-  amount      : Decimal(15,2);
-  orderDate   : DateTime @mandatory;
-  status      : String(20) default 'Draft'; // Draft, Pending, Confirmed, Cancelled
-  supplier    : Association to Suppliers;
-  provider    : Association to Providers;
-  emails      : Association to many Emails on emails.order = $self;
-  confirmation: Association to OrderConfirmations on confirmation.order = $self;
-  items       : Association to many OrderItems on items.order = $self;
+// Document Request entity (Renamed from Orders)
+entity DocumentRequests : cuid, managed {
+  requestNumber : String(50) @mandatory;
+  description   : String(500);
+  pageCount     : Integer;
+  extractionConfidence : Decimal(5,2);
+  requestDate   : DateTime @mandatory;
+  status        : String(20) default 'Pending'; // Pending, Processed, Confirmed, Rejected
+  supplier      : Association to Suppliers;
+  provider      : Association to Providers;
+  emails        : Association to many Emails on emails.request = $self;
+  confirmation  : Association to ExtractionConfirmations on confirmation.request = $self;
+  extractedData : Association to many ExtractedData on extractedData.request = $self;
 }
 
-// Order items for detailed line items
-entity OrderItems : cuid {
-  order       : Association to Orders;
-  lineNumber  : Integer;
-  product     : String(100);
-  description : String(500);
-  quantity    : Integer;
-  unitPrice   : Decimal(15,2);
-  totalPrice  : Decimal(15,2);
+// Extracted Data entity (Renamed from OrderItems)
+entity ExtractedData : cuid {
+  request     : Association to DocumentRequests;
+  fieldName   : String(100);
+  fieldValue  : String(500);
+  confidence  : Decimal(5,2);
 }
 
-// Order confirmation entity
-entity OrderConfirmations : cuid, managed {
-  order         : Association to Orders;
+// Confirmation entity (Renamed from OrderConfirmations)
+entity ExtractionConfirmations : cuid, managed {
+  request       : Association to DocumentRequests;
   confirmedBy   : String(100);
   confirmedDate : DateTime;
-  status        : String(20) default 'Pending'; // Pending, Confirmed, Rejected
+  status        : String(20) default 'Pending';
   notes         : String(1000);
 }
