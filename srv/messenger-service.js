@@ -3,14 +3,14 @@ const nodemailer = require('nodemailer');
 
 module.exports = class MessengerService extends cds.ApplicationService {
     async init() {
-        // Συνδεόμαστε απευθείας με τη βάση δεδομένων
+        // Connect with the database
         const db = await cds.connect.to('db');
         const { Orders, OrderItems } = db.entities;
 
         this.on('submitOrder', async (req) => {
             const { orderID } = req.data;
 
-            // 1. SELECT χρησιμοποιώντας το db service (παρακάμπτει το OData 400 error)
+            // 1. SELECT using db service 
             const orderData = await db.run(SELECT.one.from(Orders).where({ ID: orderID }));
             const items = await db.run(SELECT.from(OrderItems).where({ parent_ID: orderID }));
 
@@ -32,7 +32,7 @@ module.exports = class MessengerService extends cds.ApplicationService {
                 ? items.map(i => i.product).join(', ') 
                 : "No products found";
 
-            const orderLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/$fiori-preview/MessengerService/S_Orders#preview-app&/?sap-iapp-state=TASRLFV8483TVFARHX5J7JWVNQHY9KI74SBXHWZJV`;
+            const orderLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/$fiori-preview/MessengerService/S_Orders?ID=${orderID}#preview-app`;
 
             const mailOptions = {
                 from: '"KAUFLAND Service" <elperperidou@gmail.com>',
@@ -53,7 +53,7 @@ module.exports = class MessengerService extends cds.ApplicationService {
             try {
                 await transporter.sendMail(mailOptions);
                 console.log('--- SUCCESS: Email Sent ---');
-                // Επιστρέφουμε ένα απλό string για να μην προσπαθήσει το OData να κάνει πάλι validate object
+                // We return a string for validation
                 return `Success! Email sent to ${orderData.customerEmail}`;
             } catch (error) {
                 console.error('--- ERROR ---', error);

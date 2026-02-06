@@ -1,5 +1,13 @@
+# ### Call the submitOrder Action
+# POST http://localhost:4004/odata/v4/send-message/submitOrder
+# Content-Type: application/json
+
+# {
+#   "ID": "74c0f162-4fc4-4720-9426-3746618583d1"
+# }
+
 ### Call the submitOrder Action
-POST http://localhost:4004/odata/v4/send-message/submitOrder
+POST https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/odata/v4/messenger/submitOrder
 Content-Type: application/json
 
 {
