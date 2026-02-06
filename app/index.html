@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schwarz Analysis Program</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+        }
+        h1 {
+            color: #333;
+            margin-top: 0;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+        .app-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .app-tile {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        .app-tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .app-tile h2 {
+            margin: 0 0 10px 0;
+            font-size: 1.5em;
+        }
+        .app-tile p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+        .icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .info-section {
+            margin-top: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+        .info-section h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .info-section ul {
+            color: #666;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Schwarz Analysis Program</h1>
+        <p class="subtitle">Order Management & Email Notification System</p>
+        
+        <div class="app-grid">
+            <a href="/orders/webapp/index.html" class="app-tile">
+                <div class="icon">📦</div>
+                <h2>Orders Management</h2>
+                <p>Manage orders and send email notifications</p>
+            </a>
+            
+            <a href="/odata/v4/messenger" class="app-tile">
+                <div class="icon">🔌</div>
+                <h2>OData Service</h2>
+                <p>Access the backend OData V4 service</p>
+            </a>
+        </div>
+
+        <div class="info-section">
+            <h3>📋 Features</h3>
+            <ul>
+                <li><strong>Order Management:</strong> Create and manage supplier orders</li>
+                <li><strong>Order Items:</strong> Add multiple products to each order</li>
+                <li><strong>Email Notifications:</strong> Send order confirmations via email</li>
+                <li><strong>Draft Support:</strong> Save orders in draft mode before submitting</li>
+                <li><strong>Status Tracking:</strong> Monitor order status (Pending, Submitted, etc.)</li>
+            </ul>
+        </div>
+
+        <div class="info-section">
+            <h3>🚀 Quick Start</h3>
+            <ul>
+                <li>Click on <strong>Orders Management</strong> to access the UI</li>
+                <li>Create a new order by clicking the "Create" button</li>
+                <li>Fill in supplier details and add order items</li>
+                <li>Save the order and use "Submit Order" to send email notification</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

@@ -24,6 +24,9 @@
           "destination": "my-email-destination"
         }
       }
+    },
+    "features": {
+      "serve_on_root": true
     }
   },
   "private": true
