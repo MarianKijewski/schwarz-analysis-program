@@ -1,0 +1,9 @@
+POST http://localhost:4004/send/sendEmail
+Content-Type: application/json
+Authorization: Basic alice:
+
+{
+  "sender": "kalahariusz@gmail.com",
+  "recipient": "kalahariusz@gmail.com",
+  "email": "ccc"
+}
