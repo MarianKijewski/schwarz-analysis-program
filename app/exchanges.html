@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Exchanges - Data Exchange Management</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .header .breadcrumb {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .header .breadcrumb a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .header .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .toolbar {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+            max-width: 400px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+        }
+
+        .toolbar .actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 1px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f2ff;
+        }
+
+        .container {
+            padding: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-card .label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 30px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+        }
+
+        .timeline-item {
+            position: relative;
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -36px;
+            top: 25px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #667eea;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #667eea;
+        }
+
+        .timeline-item h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .timeline-item .exchange-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-label {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 0.95rem;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-in-progress {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-pending {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .comments {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.9rem;
+            color: #666;
+            font-style: italic;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+            background: white;
+            border-radius: 10px;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        @media (max-width: 768px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-box {
+                max-width: none;
+            }
+
+            .timeline {
+                padding-left: 20px;
+            }
+
+            .timeline-item::before {
+                left: -26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="breadcrumb">
+            <a href="/">🏠 Home</a> / Data Exchanges
+        </div>
+        <h1>📊 Data Exchanges</h1>
+    </div>
+
+    <div class="toolbar">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Search exchanges..." onkeyup="filterExchanges()">
+        </div>
+        <div class="actions">
+            <button class="btn btn-secondary" onclick="refreshData()">🔄 Refresh</button>
+            <button class="btn btn-primary" onclick="createNew()">+ New Exchange</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="label">Total Exchanges</div>
+                <div class="value" id="totalCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Completed</div>
+                <div class="value" id="completedCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">In Progress</div>
+                <div class="value" id="inProgressCount">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="label">Success Rate</div>
+                <div class="value" id="successRate">0%</div>
+            </div>
+        </div>
+
+        <div class="timeline" id="exchangesTimeline">
+            <div class="empty-state">
+                <div class="empty-state-icon">⏳</div>
+                <p>Loading data...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let exchangesData = [];
+
+        function getStatusClass(status) {
+            const statusMap = {
+                'Completed': 'status-completed',
+                'In Progress': 'status-in-progress',
+                'Pending': 'status-pending',
+                'Failed': 'status-failed'
+            };
+            return statusMap[status] || 'status-pending';
+        }
+
+        async function loadData() {
+            try {
+                const response = await fetch('/odata/v4/data-exchange/DataExchanges?$expand=asset,sender,receiver');
+                const data = await response.json();
+                exchangesData = data.value || [];
+                renderExchanges();
+                updateStats();
+            } catch (error) {
+                console.error('Error loading data:', error);
+                document.getElementById('exchangesTimeline').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⚠️</div>
+                        <p>Error loading data. Please try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderExchanges(data = exchangesData) {
+            const timeline = document.getElementById('exchangesTimeline');
+            
+            if (data.length === 0) {
+                timeline.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📭</div>
+                        <p>No data exchanges found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            timeline.innerHTML = data.map(exchange => `
+                <div class="timeline-item" onclick="viewDetails('${exchange.ID}')">
+                    <h3>${exchange.asset ? exchange.asset.name : 'Unknown Asset'}</h3>
+                    <span class="status-badge ${getStatusClass(exchange.status)}">
+                        ${exchange.status || 'Unknown'}
+                    </span>
+                    
+                    <div class="exchange-info">
+                        <div class="info-item">
+                            <span class="info-label">Sender</span>
+                            <span class="info-value">${exchange.sender ? exchange.sender.name : 'Unknown'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Receiver</span>
+                            <span class="info-value">${exchange.receiver ? exchange.receiver.name : 'Unknown'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Initiated</span>
+                            <span class="info-value">${exchange.initiatedAt ? new Date(exchange.initiatedAt).toLocaleDateString() : 'N/A'}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Completed</span>
+                            <span class="info-value">${exchange.completedAt ? new Date(exchange.completedAt).toLocaleDateString() : 'Pending'}</span>
+                        </div>
+                    </div>
+                    
+                    ${exchange.comments ? `<div class="comments">"${exchange.comments}"</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function updateStats() {
+            document.getElementById('totalCount').textContent = exchangesData.length;
+            
+            const completed = exchangesData.filter(e => e.status === 'Completed').length;
+            document.getElementById('completedCount').textContent = completed;
+            
+            const inProgress = exchangesData.filter(e => e.status === 'In Progress').length;
+            document.getElementById('inProgressCount').textContent = inProgress;
+            
+            const successRate = exchangesData.length > 0 ? Math.round((completed / exchangesData.length) * 100) : 0;
+            document.getElementById('successRate').textContent = successRate + '%';
+        }
+
+        function filterExchanges() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = exchangesData.filter(exchange => 
+                (exchange.asset && exchange.asset.name || '').toLowerCase().includes(searchTerm) ||
+                (exchange.sender && exchange.sender.name || '').toLowerCase().includes(searchTerm) ||
+                (exchange.receiver && exchange.receiver.name || '').toLowerCase().includes(searchTerm) ||
+                (exchange.status || '').toLowerCase().includes(searchTerm)
+            );
+            renderExchanges(filtered);
+        }
+
+        function refreshData() {
+            loadData();
+        }
+
+        function createNew() {
+            alert('Create new exchange functionality would open a form here');
+        }
+
+        function viewDetails(id) {
+            alert(`View details for exchange: ${id}\nThis would open a detail page`);
+        }
+
+        loadData();
+    </script>
+</body>
+</html>

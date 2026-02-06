@@ -1,0 +1,169 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "dataexchange",
+    "type": "application",
+    "title": "Data Exchange Management",
+    "description": "Seamless global business data exchange platform",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/odata/v4/data-exchange/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.fe.templates": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      },
+      "": {
+        "dataSource": "mainService",
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "DataExchangeList",
+          "target": "DataExchangeList"
+        },
+        {
+          "pattern": "DataExchanges({key}):?query:",
+          "name": "DataExchangeDetail",
+          "target": "DataExchangeDetail"
+        },
+        {
+          "pattern": "BusinessPartners:?query:",
+          "name": "BusinessPartnersList",
+          "target": "BusinessPartnersList"
+        },
+        {
+          "pattern": "BusinessPartners({key}):?query:",
+          "name": "BusinessPartnerDetail",
+          "target": "BusinessPartnerDetail"
+        },
+        {
+          "pattern": "DataAssets:?query:",
+          "name": "DataAssetsList",
+          "target": "DataAssetsList"
+        },
+        {
+          "pattern": "DataAssets({key}):?query:",
+          "name": "DataAssetDetail",
+          "target": "DataAssetDetail"
+        }
+      ],
+      "targets": {
+        "DataExchangeList": {
+          "type": "Component",
+          "id": "DataExchangeList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "DataExchanges",
+              "navigation": {
+                "DataExchanges": {
+                  "detail": {
+                    "route": "DataExchangeDetail"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DataExchangeDetail": {
+          "type": "Component",
+          "id": "DataExchangeDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "entitySet": "DataExchanges"
+            }
+          }
+        },
+        "BusinessPartnersList": {
+          "type": "Component",
+          "id": "BusinessPartnersList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "BusinessPartners",
+              "navigation": {
+                "BusinessPartners": {
+                  "detail": {
+                    "route": "BusinessPartnerDetail"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "BusinessPartnerDetail": {
+          "type": "Component",
+          "id": "BusinessPartnerDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "entitySet": "BusinessPartners"
+            }
+          }
+        },
+        "DataAssetsList": {
+          "type": "Component",
+          "id": "DataAssetsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "DataAssets",
+              "navigation": {
+                "DataAssets": {
+                  "detail": {
+                    "route": "DataAssetDetail"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "DataAssetDetail": {
+          "type": "Component",
+          "id": "DataAssetDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "entitySet": "DataAssets"
+            }
+          }
+        }
+      }
+    }
+  }
+}

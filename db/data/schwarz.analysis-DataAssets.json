@@ -1,0 +1,35 @@
+[
+  {
+    "ID": "d4e5f6a7-b8c9-4d5e-1f2a-3b4c5d6e7f8a",
+    "name": "Customer Analytics Report Q4 2025",
+    "description": "Comprehensive customer behavior analysis for Q4 2025",
+    "category": "Analytics",
+    "owner_ID": "a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d",
+    "url": "https://assets.example.com/analytics/q4-2025",
+    "size": 15728640,
+    "format": "PDF",
+    "isPublic": false
+  },
+  {
+    "ID": "e5f6a7b8-c9d0-4e5f-2a3b-4c5d6e7f8a9b",
+    "name": "Market Research Data 2026",
+    "description": "Global market research data and insights for 2026",
+    "category": "Research",
+    "owner_ID": "b2c3d4e5-f6a7-4b5c-9d0e-1f2a3b4c5d6e",
+    "url": "https://assets.example.com/research/2026",
+    "size": 52428800,
+    "format": "Excel",
+    "isPublic": true
+  },
+  {
+    "ID": "f6a7b8c9-d0e1-4f5a-3b4c-5d6e7f8a9b0c",
+    "name": "Supply Chain Optimization Model",
+    "description": "AI-powered supply chain optimization model and dataset",
+    "category": "AI/ML",
+    "owner_ID": "c3d4e5f6-a7b8-4c5d-0e1f-2a3b4c5d6e7f",
+    "url": "https://assets.example.com/ai/supply-chain",
+    "size": 104857600,
+    "format": "JSON",
+    "isPublic": false
+  }
+]
