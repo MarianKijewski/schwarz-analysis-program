@@ -7,9 +7,12 @@ sap.ui.define([
         submitOrder: function(oEvent) {
             const oContext = oEvent.getSource().getBindingContext();
             const oModel = oContext.getModel();
-            const sOrderID = oContext.getProperty("ID");
+            const sPath = oContext.getPath();
 
-            oModel.bindContext(`/S_Orders(${sOrderID})/MessengerService.submitOrder(...)`).execute()
+            // Use the context path to build the action binding
+            const oActionContext = oModel.bindContext(sPath + "/MessengerService.submitOrder(...)");
+            
+            oActionContext.execute()
                 .then(function(oResult) {
                     MessageToast.show("Order submitted successfully!");
                     oModel.refresh();

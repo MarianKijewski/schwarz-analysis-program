@@ -299,13 +299,9 @@
         }
         
         function showOrderDetails(order) {
-            const itemsHtml = order.items && order.items.length > 0
-                ? order.items.map(item => `
-                    <div style="padding: 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 10px;">
-                        <strong>${item.product}</strong> - Quantity: ${item.quantity}
-                    </div>
-                `).join('')
-                : '<p style="color: #6c757d;">No items added</p>';
+            const itemsText = order.items && order.items.length > 0
+                ? order.items.map(item => `  - ${item.product}: ${item.quantity}`).join('\n')
+                : 'No items added';
             
             alert(`Order Details:\n\n` +
                   `Supplier: ${order.producer}\n` +
@@ -313,7 +309,7 @@
                   `VAT: ${order.vatNumber || 'N/A'}\n` +
                   `Address: ${order.address || 'N/A'}\n` +
                   `Status: ${order.status}\n\n` +
-                  `Items: ${order.items ? order.items.length : 0}`);
+                  `Items:\n${itemsText}`);
         }
         
         // Load orders on page load
