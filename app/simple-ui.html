@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Management - Simple UI</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2em;
+        }
+        
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+        
+        .actions {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #5568d3;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow-x: auto;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th {
+            background: #f8f9fa;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #dee2e6;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #dee2e6;
+            color: #495057;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-submitted {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-content h2 {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #495057;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+        
+        .items-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #dee2e6;
+        }
+        
+        .item-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .item-row input {
+            flex: 1;
+        }
+        
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📦 Orders Management</h1>
+        <p>Manage orders and send email notifications</p>
+    </div>
+
+    <div class="actions">
+        <button class="btn" onclick="window.location.href='/'">← Back to Home</button>
+        <button class="btn" onclick="loadOrders()">🔄 Refresh</button>
+        <button class="btn-secondary btn" onclick="window.location.href='/odata/v4/messenger'">View OData Service</button>
+    </div>
+
+    <div id="error" class="error" style="display: none;"></div>
+
+    <div class="table-container">
+        <h2 style="margin-bottom: 20px;">Orders List</h2>
+        <div id="loading" class="loading">Loading orders...</div>
+        <div id="tableContent" style="display: none;">
+            <table id="ordersTable">
+                <thead>
+                    <tr>
+                        <th>Supplier Name</th>
+                        <th>Email</th>
+                        <th>VAT Number</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+                </thead>
+                <tbody id="ordersBody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        async function loadOrders() {
+            const loading = document.getElementById('loading');
+            const tableContent = document.getElementById('tableContent');
+            const errorDiv = document.getElementById('error');
+            
+            loading.style.display = 'block';
+            tableContent.style.display = 'none';
+            errorDiv.style.display = 'none';
+            
+            try {
+                const response = await fetch('/odata/v4/messenger/S_Orders?$expand=items');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                
+                const tbody = document.getElementById('ordersBody');
+                tbody.innerHTML = '';
+                
+                if (data.value && data.value.length > 0) {
+                    data.value.forEach(order => {
+                        const row = tbody.insertRow();
+                        row.onclick = () => showOrderDetails(order);
+                        
+                        row.insertCell(0).textContent = order.producer || '-';
+                        row.insertCell(1).textContent = order.customerEmail || '-';
+                        row.insertCell(2).textContent = order.vatNumber || '-';
+                        row.insertCell(3).textContent = order.address || '-';
+                        
+                        const statusCell = row.insertCell(4);
+                        const statusClass = order.status === 'Pending' ? 'status-pending' : 'status-submitted';
+                        statusCell.innerHTML = `<span class="status ${statusClass}">${order.status}</span>`;
+                        
+                        const createdDate = new Date(order.createdAt);
+                        row.insertCell(5).textContent = createdDate.toLocaleDateString() + ' ' + createdDate.toLocaleTimeString();
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #6c757d;">No orders found</td></tr>';
+                }
+                
+                loading.style.display = 'none';
+                tableContent.style.display = 'block';
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                errorDiv.textContent = 'Error loading orders: ' + error.message;
+                errorDiv.style.display = 'block';
+                loading.style.display = 'none';
+            }
+        }
+        
+        function showOrderDetails(order) {
+            const itemsHtml = order.items && order.items.length > 0
+                ? order.items.map(item => `
+                    <div style="padding: 10px; background: #f8f9fa; border-radius: 4px; margin-bottom: 10px;">
+                        <strong>${item.product}</strong> - Quantity: ${item.quantity}
+                    </div>
+                `).join('')
+                : '<p style="color: #6c757d;">No items added</p>';
+            
+            alert(`Order Details:\n\n` +
+                  `Supplier: ${order.producer}\n` +
+                  `Email: ${order.customerEmail}\n` +
+                  `VAT: ${order.vatNumber || 'N/A'}\n` +
+                  `Address: ${order.address || 'N/A'}\n` +
+                  `Status: ${order.status}\n\n` +
+                  `Items: ${order.items ? order.items.length : 0}`);
+        }
+        
+        // Load orders on page load
+        loadOrders();
+    </script>
+</body>
+</html>
