@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Provider Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            background: #f5f5f5;
+            border-bottom: 2px solid #ddd;
+        }
+        
+        .tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            background: #f5f5f5;
+            border: none;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+        
+        .tab:hover {
+            background: #e0e0e0;
+        }
+        
+        .tab.active {
+            background: white;
+            color: #f5576c;
+            border-bottom: 3px solid #f5576c;
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f5576c;
+        }
+        
+        .card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .card-title {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-sent { background: #e3f2fd; color: #1976d2; }
+        .status-delivered { background: #f3e5f5; color: #7b1fa2; }
+        .status-read { background: #e8f5e9; color: #388e3c; }
+        .status-failed { background: #ffebee; color: #c62828; }
+        .status-draft { background: #fff3e0; color: #e65100; }
+        .status-pending { background: #fff9c4; color: #f57f17; }
+        .status-confirmed { background: #e8f5e9; color: #2e7d32; }
+        .status-cancelled { background: #ffebee; color: #c62828; }
+        
+        .card-body {
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+        
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .info-value {
+            color: #777;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin: 5px;
+        }
+        
+        .btn-primary {
+            background: #f5576c;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #e84855;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #c82333;
+        }
+        
+        .actions {
+            margin-top: 15px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+        }
+        
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            color: #333;
+            font-size: 1.5em;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔧 Provider Portal</h1>
+            <p>Manage your orders, emails, and confirmations</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('orders')">My Orders</button>
+            <button class="tab" onclick="switchTab('emails')">Email Notifications</button>
+            <button class="tab" onclick="switchTab('confirmations')">Confirmations</button>
+        </div>
+        
+        <div id="orders-tab" class="tab-content active">
+            <div class="section">
+                <h2>My Orders</h2>
+                <div id="orders-list" class="loading">Loading orders...</div>
+            </div>
+        </div>
+        
+        <div id="emails-tab" class="tab-content">
+            <div class="section">
+                <h2>Email Notifications</h2>
+                <div id="emails-list" class="loading">Loading emails...</div>
+            </div>
+        </div>
+        
+        <div id="confirmations-tab" class="tab-content">
+            <div class="section">
+                <h2>Order Confirmations</h2>
+                <div id="confirmations-list" class="loading">Loading confirmations...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Order Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Edit Order</h3>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editOrderId">
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="editDescription"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input type="number" id="editQuantity">
+                </div>
+                <div class="form-group">
+                    <label>Amount</label>
+                    <input type="number" step="0.01" id="editAmount">
+                </div>
+                <div class="actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        const API_BASE = '/admin';
+        let currentProvider = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            // For demo, use first provider
+            await loadProvider();
+            await loadOrders();
+            await loadEmails();
+            await loadConfirmations();
+        });
+        
+        async function loadProvider() {
+            try {
+                const response = await fetch(`${API_BASE}/Providers`);
+                const data = await response.json();
+                if (data.value && data.value.length > 0) {
+                    currentProvider = data.value[0];
+                }
+            } catch (error) {
+                console.error('Error loading provider:', error);
+            }
+        }
+        
+        async function loadOrders() {
+            const container = document.getElementById('orders-list');
+            try {
+                const response = await fetch(`${API_BASE}/Orders?$expand=supplier,provider,confirmation`);
+                const data = await response.json();
+                
+                if (!data.value || data.value.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No orders found</p></div>';
+                    return;
+                }
+                
+                container.innerHTML = data.value.map(order => `
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Order #${order.orderNumber}</div>
+                            <span class="status-badge status-${order.status.toLowerCase()}">${order.status}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-row">
+                                <span class="info-label">Description:</span>
+                                <span class="info-value">${order.description || 'N/A'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Quantity:</span>
+                                <span class="info-value">${order.quantity || 'N/A'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Amount:</span>
+                                <span class="info-value">$${order.amount || '0.00'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Order Date:</span>
+                                <span class="info-value">${new Date(order.orderDate).toLocaleDateString()}</span>
+                            </div>
+                            ${order.supplier ? `
+                            <div class="info-row">
+                                <span class="info-label">Supplier:</span>
+                                <span class="info-value">${order.supplier.name}</span>
+                            </div>` : ''}
+                            ${order.provider ? `
+                            <div class="info-row">
+                                <span class="info-label">Provider:</span>
+                                <span class="info-value">${order.provider.name}</span>
+                            </div>` : ''}
+                        </div>
+                        ${order.status === 'Draft' || order.status === 'Pending' ? `
+                        <div class="actions">
+                            <button class="btn btn-primary" onclick="editOrder('${order.ID}', ${JSON.stringify(order).replace(/"/g, '&quot;')})">✏️ Edit Order</button>
+                            <button class="btn btn-success" onclick="confirmOrder('${order.ID}')">✅ Confirm Order</button>
+                        </div>` : ''}
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                container.innerHTML = '<div class="empty-state"><p>Error loading orders</p></div>';
+            }
+        }
+        
+        async function loadEmails() {
+            const container = document.getElementById('emails-list');
+            try {
+                const response = await fetch(`${API_BASE}/Emails?$expand=order`);
+                const data = await response.json();
+                
+                if (!data.value || data.value.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📧</div><p>No emails found</p></div>';
+                    return;
+                }
+                
+                container.innerHTML = data.value.map(email => `
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">${email.subject}</div>
+                            <span class="status-badge status-${email.status.toLowerCase()}">${email.status}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-row">
+                                <span class="info-label">To:</span>
+                                <span class="info-value">${email.recipient}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">From:</span>
+                                <span class="info-value">${email.sender || 'System'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Sent:</span>
+                                <span class="info-value">${new Date(email.sentDate).toLocaleString()}</span>
+                            </div>
+                            ${email.order ? `
+                            <div class="info-row">
+                                <span class="info-label">Related Order:</span>
+                                <span class="info-value">#${email.order.orderNumber}</span>
+                            </div>` : ''}
+                            <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 5px;">
+                                <strong>Message:</strong><br>
+                                ${email.body || 'No message content'}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading emails:', error);
+                container.innerHTML = '<div class="empty-state"><p>Error loading emails</p></div>';
+            }
+        }
+        
+        async function loadConfirmations() {
+            const container = document.getElementById('confirmations-list');
+            try {
+                const response = await fetch(`${API_BASE}/OrderConfirmations?$expand=order`);
+                const data = await response.json();
+                
+                if (!data.value || data.value.length === 0) {
+                    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">✅</div><p>No confirmations found</p></div>';
+                    return;
+                }
+                
+                container.innerHTML = data.value.map(conf => `
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Confirmation for Order #${conf.order?.orderNumber || 'N/A'}</div>
+                            <span class="status-badge status-${conf.status.toLowerCase()}">${conf.status}</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="info-row">
+                                <span class="info-label">Confirmed By:</span>
+                                <span class="info-value">${conf.confirmedBy || 'N/A'}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Confirmed Date:</span>
+                                <span class="info-value">${conf.confirmedDate ? new Date(conf.confirmedDate).toLocaleString() : 'N/A'}</span>
+                            </div>
+                            ${conf.notes ? `
+                            <div style="margin-top: 10px; padding: 10px; background: white; border-radius: 5px;">
+                                <strong>Notes:</strong><br>
+                                ${conf.notes}
+                            </div>` : ''}
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading confirmations:', error);
+                container.innerHTML = '<div class="empty-state"><p>Error loading confirmations</p></div>';
+            }
+        }
+        
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+        }
+        
+        function editOrder(orderId, orderData) {
+            document.getElementById('editOrderId').value = orderId;
+            document.getElementById('editDescription').value = orderData.description || '';
+            document.getElementById('editQuantity').value = orderData.quantity || '';
+            document.getElementById('editAmount').value = orderData.amount || '';
+            document.getElementById('editModal').classList.add('active');
+        }
+        
+        function closeEditModal() {
+            document.getElementById('editModal').classList.remove('active');
+        }
+        
+        document.getElementById('editForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const orderId = document.getElementById('editOrderId').value;
+            const updates = {
+                description: document.getElementById('editDescription').value,
+                quantity: parseInt(document.getElementById('editQuantity').value),
+                amount: parseFloat(document.getElementById('editAmount').value)
+            };
+            
+            try {
+                const response = await fetch(`${API_BASE}/Orders(${orderId})`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(updates)
+                });
+                
+                if (response.ok) {
+                    alert('Order updated successfully!');
+                    closeEditModal();
+                    await loadOrders();
+                } else {
+                    alert('Failed to update order');
+                }
+            } catch (error) {
+                console.error('Error updating order:', error);
+                alert('Error updating order');
+            }
+        });
+        
+        async function confirmOrder(orderId) {
+            if (!confirm('Are you sure you want to confirm this order?')) {
+                return;
+            }
+            
+            try {
+                // Update order status to Confirmed
+                const response = await fetch(`${API_BASE}/Orders(${orderId})`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ status: 'Confirmed' })
+                });
+                
+                if (response.ok) {
+                    // Create confirmation
+                    await fetch(`${API_BASE}/OrderConfirmations`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            order_ID: orderId,
+                            confirmedDate: new Date().toISOString(),
+                            status: 'Confirmed',
+                            confirmedBy: 'Provider Portal'
+                        })
+                    });
+                    
+                    alert('Order confirmed successfully!');
+                    await loadOrders();
+                    await loadConfirmations();
+                } else {
+                    alert('Failed to confirm order');
+                }
+            } catch (error) {
+                console.error('Error confirming order:', error);
+                alert('Error confirming order');
+            }
+        }
+    </script>
+</body>
+</html>
