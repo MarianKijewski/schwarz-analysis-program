@@ -1,14 +1,15 @@
 using { com.schwarz.app as db } from '../db/schema';
 
-// Service for Suppliers
-service SupplierService @(path: '/supplier') {
+// 1. SUPPLIER SERVICE (Restricted to 'Supplier' Role)
+service SupplierService @(path: '/supplier', requires: 'Supplier') {
+  
   @readonly entity Suppliers as projection on db.Suppliers;
   
   entity MyEmails as projection on db.Emails 
     where supplier.ID = $user.id;
 
   entity MyRequests as projection on db.DocumentRequests 
-    // where supplier.ID = $user.id  <-- Security disabled for testing
+    where supplier.ID = $user.id
   actions {
       action confirmExtraction() returns MyConfirmations;
   };
@@ -19,15 +20,15 @@ service SupplierService @(path: '/supplier') {
   action updateRequest(requestID: UUID, updates: String) returns MyRequests;
 }
 
-// Service for RETAILERS (Renamed)
-service RetailerService @(path: '/retailer') {
+// 2. RETAILER SERVICE (Restricted to 'Retailer' Role)
+service RetailerService @(path: '/retailer', requires: 'Retailer') {
+  
   @readonly entity Retailers as projection on db.Retailers;
   
-  entity MyEmails as projection on db.Emails 
-    where retailer.ID = $user.id;
+  entity MyEmails as projection on db.Emails;
     
+  // Retailer sees ALL requests
   entity MyRequests as projection on db.DocumentRequests 
-    // where retailer.ID = $user.id <-- Security disabled for testing
   actions {
       action confirmExtraction() returns MyConfirmations;
   };
@@ -38,10 +39,10 @@ service RetailerService @(path: '/retailer') {
   action updateRequest(requestID: UUID, updates: String) returns MyRequests;
 }
 
-// Admin service
+// 3. ADMIN SERVICE
 service AdminService @(path: '/admin') {
   entity Suppliers as projection on db.Suppliers;
-  entity Retailers as projection on db.Retailers; // Renamed
+  entity Retailers as projection on db.Retailers;
   entity Emails as projection on db.Emails;
   entity DocumentRequests as projection on db.DocumentRequests;
   entity ExtractionConfirmations as projection on db.ExtractionConfirmations;

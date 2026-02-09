@@ -13,17 +13,40 @@
   },
   "scripts": {
     "start": "cds-serve",
-    "watch-supplierportal": "cds watch --open com.schwarz.supplierportal/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-provider-portal": "cds watch --open com.schwarz.providerportal/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-retailer-portal": "cds watch --open com.schwarz.retailerportal/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-supplierportal": "cds watch --open com.schwarz.supplierportal/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
     "app/*"
   ],
   "sapux": [
-    "app/supplierportal",
-    "app/provider-portal",
-    "app/retailer-portal"
-  ]
+    "app/supplierportal"
+  ],
+  "cds": {
+    "auth": {
+      "users": {
+        "acme": {
+          "password": "123",
+          "roles": ["Supplier"],
+          "attr": {
+            "id": "11111111-1111-1111-1111-111111111111"
+          }
+        },
+        "global": {
+          "password": "123",
+          "roles": ["Supplier"],
+          "attr": {
+            "id": "22222222-2222-2222-2222-222222222222"
+          }
+        },
+        "schwarz": {
+          "password": "admin",
+          "roles": ["Retailer"],
+          "attr": {
+            "id": "retailer-admin-id" 
+          }
+        }
+      }
+    }
+  }
 }
