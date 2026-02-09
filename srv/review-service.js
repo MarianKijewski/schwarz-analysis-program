@@ -14,8 +14,9 @@ module.exports = cds.service.impl(async function () {
     // Fetch order with items expanded
     const order = await SELECT.from `Orders` .where(orderId)
       .columns(
+        ref`ID`,
         ref`status`,
-        expand (ref`Items`, columns`name, quantity, price`)
+        expand (ref`items`, columns`name, quantity, price`)
       )
 
     if (!order) {
