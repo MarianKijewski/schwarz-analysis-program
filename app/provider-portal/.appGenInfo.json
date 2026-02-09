@@ -6,7 +6,7 @@
     "metadataFilename": "",
     "serviceUrl": "http://localhost:4004/supplier/",
     "appName": "provider-portal",
-    "appTitle": "Provider Portal",
+    "appTitle": "Company Portal",
     "appDescription": "Manage document extraction tasks",
     "appNamespace": "com.schwarz",
     "ui5Theme": "sap_horizon",

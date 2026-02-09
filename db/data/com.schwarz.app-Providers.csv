@@ -1,4 +1,2 @@
-ID;name;email;phone;company;status
-101;Acme Corp;ntinosmak@gmail.com;555-0100;Acme International;Active
-102;Globex Inc;info@globex.com;555-0199;Globex Germany;Active
-103;Soylent Corp;supply@soylent.com;555-2020;Soylent Green Ltd;Active
+ID,name,email,phone,status
+66e22201-1111-4f40-97b7-347201725831,Kaufland Global,admin@kaufland.com,+49-123-456789,Active

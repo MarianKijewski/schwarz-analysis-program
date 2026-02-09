@@ -9,7 +9,7 @@
 |**Service Type**<br>Local CAP|
 |**Service URL**<br>http://localhost:4004/supplier/|
 |**Module Name**<br>provider-portal|
-|**Application Title**<br>Provider Portal|
+|**Application Title**<br>Company Portal|
 |**Namespace**<br>com.schwarz|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.144.1|
