@@ -1,114 +1,45 @@
-// using SupplierService as service from '../../srv/main-service';
+using SupplierService as service from '../../srv/main-service';
 
-// annotate service.MyRequests with @(
-//     // 1. The Table Columns (Button + Data)
-//     UI.LineItem : [
-//         // The Button comes first!
-//         {
-//             $Type : 'UI.DataFieldForAction',
-//             Action : 'SupplierService.confirmExtraction',
-//             Label : 'Confirm Extraction',
-//             Criticality : #Positive
-//         },
-//         // Now the normal columns
-//         {
-//             $Type : 'UI.DataField',
-//             Label : 'Request Number',
-//             Value : requestNumber,
-//         },
-//         {
-//             $Type : 'UI.DataField',
-//             Label : 'Description',
-//             Value : description,
-//         },
-//         {
-//             $Type : 'UI.DataField',
-//             Label : 'Page Count',
-//             Value : pageCount,
-//         },
-//         {
-//             $Type : 'UI.DataField',
-//             Label : 'Confidence',
-//             Value : extractionConfidence,
-//         },
-//         {
-//             $Type : 'UI.DataField',
-//             Label : 'Date',
-//             Value : requestDate,
-//         },
-//         {
-//             $Type : 'UI.DataField',
-//             Label : 'Status',
-//             Value : status,
-//             Criticality : #Positive 
-//         },
-//     ],
+annotate service.MyRequests with @(
+    UI.SelectionFields : [ requestNumber, status ],
+    UI.LineItem : [
+        {
+            $Type : 'UI.DataFieldForAction',
+            Action : 'SupplierService.confirmExtraction',
+            Label : 'Confirm Extraction',
+            Criticality : #Positive
+        },
+        { $Type : 'UI.DataField', Value : requestNumber, Label : 'Request Number' },
+        { $Type : 'UI.DataField', Value : supplierName, Label : 'Supplier Name' },
+        { $Type : 'UI.DataField', Value : requestDate, Label : 'Date' },
+        { $Type : 'UI.DataField', Value : status, Label : 'Status', Criticality : statusControl }
+    ]
+);
 
-//     // 2. The Detail Page (When you click a row)
-//     UI.FieldGroup #GeneratedGroup : {
-//         $Type : 'UI.FieldGroupType',
-//         Data : [
-//             {
-//                 $Type : 'UI.DataField',
-//                 Label : 'Request Number',
-//                 Value : requestNumber,
-//             },
-//             {
-//                 $Type : 'UI.DataField',
-//                 Label : 'Description',
-//                 Value : description,
-//             },
-//             {
-//                 $Type : 'UI.DataField',
-//                 Label : 'Page Count',
-//                 Value : pageCount,
-//             },
-//             {
-//                 $Type : 'UI.DataField',
-//                 Label : 'Confidence',
-//                 Value : extractionConfidence,
-//             },
-//             {
-//                 $Type : 'UI.DataField',
-//                 Label : 'Date',
-//                 Value : requestDate,
-//             },
-//             {
-//                 $Type : 'UI.DataField',
-//                 Label : 'Status',
-//                 Value : status,
-//             },
-//         ],
-//     },
-//     UI.Facets : [
-//         {
-//             $Type : 'UI.ReferenceFacet',
-//             ID : 'GeneratedFacet1',
-//             Label : 'General Information',
-//             Target : '@UI.FieldGroup#GeneratedGroup',
-//         },
-//     ]
-// );
+annotate service.MyRequests with @(
+    UI.Facets : [
+        { $Type : 'UI.ReferenceFacet', ID : 'MainFacet', Label : 'General Info', Target : '@UI.FieldGroup#Details' },
+        { $Type : 'UI.ReferenceFacet', ID : 'ItemsFacet', Label : 'Products', Target : 'extractedData/@UI.LineItem' }
+    ],
+    UI.FieldGroup #Details : {
+        $Type : 'UI.FieldGroupType',
+        Data : [
+            { Value : requestNumber, Label : 'Request Number' },
+            { Value : status, Label : 'Status' }
+        ]
+    }
+);
 
-// // 3. The Dropdown Logic (Value Help)
-// annotate service.MyRequests with {
-//     supplier @Common.ValueList : {
-//         $Type : 'Common.ValueListType',
-//         CollectionPath : 'Suppliers',
-//         Parameters : [
-//             {
-//                 $Type : 'Common.ValueListParameterInOut',
-//                 LocalDataProperty : supplier_ID,
-//                 ValueListProperty : 'ID',
-//             },
-//             {
-//                 $Type : 'Common.ValueListParameterDisplayOnly',
-//                 ValueListProperty : 'name',
-//             },
-//             {
-//                 $Type : 'Common.ValueListParameterDisplayOnly',
-//                 ValueListProperty : 'email',
-//             },
-//         ],
-//     }
-// };
+annotate service.ExtractedData with @(
+    UI.LineItem : [
+        { Value : fieldName, Label : 'Product / Field' },
+        { Value : fieldValue, Label : 'Value / Quantity' },
+        { Value : confidence, Label : 'Confidence Score' }
+    ]
+);
+
+annotate service.ExtractedData with {
+    fieldName  @Common.FieldControl : #Mandatory;
+    fieldValue @Common.FieldControl : #Optional;
+    confidence @readonly;
+};

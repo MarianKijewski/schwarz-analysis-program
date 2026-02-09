@@ -7,7 +7,7 @@
     "applicationVersion": {
       "version": "0.0.1"
     },
-    "title": "{{appTitle}}",
+    "title": "Company Portal",
     "description": "{{appDescription}}",
     "resources": "resources.json",
     "sourceTemplate": {
