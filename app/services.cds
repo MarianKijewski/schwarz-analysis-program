@@ -1,4 +1,4 @@
 
 using from './supplierportal/annotations';
 
-using from './provider-portal/annotations';
+using from './retailer-portal/annotations';

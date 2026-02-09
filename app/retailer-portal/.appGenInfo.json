@@ -1,13 +1,13 @@
 {
   "generationParameters": {
-    "generationDate": "Fri Feb 06 2026 14:39:09 GMT+0000 (Coordinated Universal Time)",
+    "generationDate": "Mon Feb 09 2026 10:54:44 GMT+0000 (Coordinated Universal Time)",
     "generatorPlatform": "SAP Business Application Studio",
     "serviceType": "Local CAP",
     "metadataFilename": "",
     "serviceUrl": "http://localhost:4004/supplier/",
-    "appName": "provider-portal",
-    "appTitle": "Provider Portal",
-    "appDescription": "Manage document extraction tasks",
+    "appName": "retailer-portal",
+    "appTitle": "Retailer Portal",
+    "appDescription": "Portal for Retailers to process requests",
     "appNamespace": "com.schwarz",
     "ui5Theme": "sap_horizon",
     "ui5Version": "1.144.1",
@@ -27,6 +27,6 @@
         "value": "None"
       }
     ],
-    "launchText": "To launch the generated app, start your CAP project:  and navigate to the following location in your browser:\n\nhttp://localhost:4004/com.schwarz.providerportal/index.html"
+    "launchText": "To launch the generated app, start your CAP project:  and navigate to the following location in your browser:\n\nhttp://localhost:4004/com.schwarz.retailerportal/index.html"
   }
 }

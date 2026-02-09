@@ -2,7 +2,7 @@
 
 specVersion: "4.0"
 metadata:
-  name: com.schwarz.providerportal
+  name: com.schwarz.retailerportal
 type: application
 server:
   customMiddleware:

@@ -3,7 +3,7 @@ sap.ui.define(
     function (Component) {
         "use strict";
 
-        return Component.extend("com.schwarz.providerportal.Component", {
+        return Component.extend("com.schwarz.retailerportal.Component", {
             metadata: {
                 manifest: "json"
             }

@@ -7,9 +7,8 @@ service SupplierService @(path: '/supplier') {
   entity MyEmails as projection on db.Emails 
     where supplier.ID = $user.id;
 
-  // Supplier Requests with Bound Action
   entity MyRequests as projection on db.DocumentRequests 
-    // where supplier.ID = $user.id  <-- Keep commented out for easy testing
+    // where supplier.ID = $user.id  <-- Security disabled for testing
   actions {
       action confirmExtraction() returns MyConfirmations;
   };
@@ -20,16 +19,15 @@ service SupplierService @(path: '/supplier') {
   action updateRequest(requestID: UUID, updates: String) returns MyRequests;
 }
 
-// Service for Providers (FIXED)
-service ProviderService @(path: '/provider') {
-  @readonly entity Providers as projection on db.Providers;
+// Service for RETAILERS (Renamed)
+service RetailerService @(path: '/retailer') {
+  @readonly entity Retailers as projection on db.Retailers;
   
   entity MyEmails as projection on db.Emails 
-    where provider.ID = $user.id;
+    where retailer.ID = $user.id;
     
-  // Provider Requests with Bound Action (Moved Inside!)
   entity MyRequests as projection on db.DocumentRequests 
-    // where provider.ID = $user.id <-- Keep commented out for easy testing
+    // where retailer.ID = $user.id <-- Security disabled for testing
   actions {
       action confirmExtraction() returns MyConfirmations;
   };
@@ -43,7 +41,7 @@ service ProviderService @(path: '/provider') {
 // Admin service
 service AdminService @(path: '/admin') {
   entity Suppliers as projection on db.Suppliers;
-  entity Providers as projection on db.Providers;
+  entity Retailers as projection on db.Retailers; // Renamed
   entity Emails as projection on db.Emails;
   entity DocumentRequests as projection on db.DocumentRequests;
   entity ExtractionConfirmations as projection on db.ExtractionConfirmations;

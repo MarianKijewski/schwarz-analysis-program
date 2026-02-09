@@ -14,7 +14,8 @@
   "scripts": {
     "start": "cds-serve",
     "watch-supplierportal": "cds watch --open com.schwarz.supplierportal/index.html?sap-ui-xx-viewCache=false --livereload false",
-    "watch-provider-portal": "cds watch --open com.schwarz.providerportal/index.html?sap-ui-xx-viewCache=false --livereload false"
+    "watch-provider-portal": "cds watch --open com.schwarz.providerportal/index.html?sap-ui-xx-viewCache=false --livereload false",
+    "watch-retailer-portal": "cds watch --open com.schwarz.retailerportal/index.html?sap-ui-xx-viewCache=false --livereload false"
   },
   "private": true,
   "workspaces": [
@@ -22,6 +23,7 @@
   ],
   "sapux": [
     "app/supplierportal",
-    "app/provider-portal"
+    "app/provider-portal",
+    "app/retailer-portal"
   ]
 }

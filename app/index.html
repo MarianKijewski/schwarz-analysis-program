@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schwarz Digits Portal</title>
+    <style>
+        body {
+            font-family: '72', Arial, sans-serif;
+            background: #f5f7fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 { color: #32363a; margin-bottom: 40px; }
+        .card-container { display: flex; gap: 30px; }
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 200px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            text-decoration: none;
+            color: #32363a;
+        }
+        .card:hover { transform: translateY(-5px); }
+        .icon { font-size: 48px; margin-bottom: 20px; display: block; }
+        .title { font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Schwarz Digits System</h1>
+    <div class="card-container">
+        <a href="/com.schwarz.supplierportal/index.html" class="card">
+            <span class="icon">🏭</span>
+            <div class="title">Supplier Portal</div>
+        </a>
+
+        <a href="/com.schwarz.retailerportal/index.html" class="card">
+            <span class="icon">🛒</span>
+            <div class="title">Retailer Portal</div>
+        </a>
+    </div>
+</body>
+</html>

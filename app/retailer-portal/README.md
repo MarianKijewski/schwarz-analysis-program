@@ -1,15 +1,15 @@
 ## Application Details
 |               |
 | ------------- |
-|**Generation Date and Time**<br>Fri Feb 06 2026 14:39:09 GMT+0000 (Coordinated Universal Time)|
+|**Generation Date and Time**<br>Mon Feb 09 2026 10:54:44 GMT+0000 (Coordinated Universal Time)|
 |**App Generator**<br>SAP Fiori Application Generator|
 |**App Generator Version**<br>1.20.2|
 |**Generation Platform**<br>SAP Business Application Studio|
 |**Template Used**<br>List Report Page V4|
 |**Service Type**<br>Local CAP|
 |**Service URL**<br>http://localhost:4004/supplier/|
-|**Module Name**<br>provider-portal|
-|**Application Title**<br>Provider Portal|
+|**Module Name**<br>retailer-portal|
+|**Application Title**<br>Retailer Portal|
 |**Namespace**<br>com.schwarz|
 |**UI5 Theme**<br>sap_horizon|
 |**UI5 Version**<br>1.144.1|
@@ -18,15 +18,15 @@
 |**Main Entity**<br>MyRequests|
 |**Navigation Entity**<br>None|
 
-## provider-portal
+## retailer-portal
 
-Manage document extraction tasks
+Portal for Retailers to process requests
 
 ### Starting the generated app
 
 -   This app has been generated using the SAP Fiori tools - App Generator, as part of the SAP Fiori tools suite.  To launch the generated app, start your CAP project:  and navigate to the following location in your browser:
 
-http://localhost:4004/com.schwarz.providerportal/index.html
+http://localhost:4004/com.schwarz.retailerportal/index.html
 
 #### Pre-requisites:
 

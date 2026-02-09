@@ -1,7 +1,7 @@
 {
   "_version": "1.81.0",
   "sap.app": {
-    "id": "com.schwarz.providerportal",
+    "id": "com.schwarz.retailerportal",
     "type": "application",
     "i18n": "i18n/i18n.properties",
     "applicationVersion": {
@@ -13,7 +13,7 @@
     "sourceTemplate": {
       "id": "@sap/generator-fiori:lrop",
       "version": "1.20.2",
-      "toolsId": "fc17a179-0d53-4723-8117-b37d6a8462ae"
+      "toolsId": "62a0ee4d-8b33-4123-a38a-c5be8c64e589"
     },
     "dataSources": {
       "mainService": {
@@ -22,6 +22,19 @@
         "settings": {
           "annotations": [],
           "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "Retailer-manage": {
+          "semanticObject": "Retailer",
+          "action": "manage",
+          "title": "{{Retailer-manage.flpTitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
     }
@@ -60,7 +73,7 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "com.schwarz.providerportal.i18n.i18n"
+          "bundleName": "com.schwarz.retailerportal.i18n.i18n"
         }
       },
       "": {

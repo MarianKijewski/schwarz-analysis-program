@@ -1,7 +1,7 @@
 {
-  "name": "provider-portal",
+  "name": "retailer-portal",
   "version": "0.0.1",
-  "description": "Manage document extraction tasks",
+  "description": "Portal for Retailers to process requests",
   "keywords": [
     "ui5",
     "openui5",
