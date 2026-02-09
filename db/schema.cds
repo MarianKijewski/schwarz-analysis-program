@@ -3,8 +3,7 @@ namespace sap.cap.orders;
 
 entity Orders : cuid, managed {
   items : Composition of many {
-    order       : Association to Orders;
-    name        : String;
+    key name        : String;
     quantity    : Integer;
     price       : Price;
   }
