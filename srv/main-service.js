@@ -49,8 +49,10 @@ module.exports = cds.service.impl(async function() {
         });
 
         // 4. Δημιουργία Link και Λίστας
-        const portalLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/com.schwarz.supplierportal/test/flp.html?sap-ui-xx-viewCache=false#app-preview&/?sap-iapp-state=TAS0H8IILD832D83PKH6OXMZ01FLND8CGAX04U0E1`;
+        // const portalLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/com.schwarz.supplierportal/test/flp.html?sap-ui-xx-viewCache=false#app-preview&/?sap-iapp-state=TAS0H8IILD832D83PKH6OXMZ01FLND8CGAX04U0E1`;
 
+        const portalLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/com.schwarz.supplierportal/test/flp.html#app-preview&/MyRequests(ID='${requestId}',IsActiveEntity=true)`;
+       
         const productList = (items && items.length > 0) 
             ? items.map(i => `<li><b>${i.fieldName}:</b> ${i.fieldValue}</li>`).join('') 
             : "<li>No items extracted</li>";

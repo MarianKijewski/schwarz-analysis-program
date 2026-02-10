@@ -26,17 +26,14 @@ entity Providers : cuid, managed {
 // 3. DocumentRequests: Οι Παραγγελίες (Εδώ διορθώθηκαν τα πεδία που έλειπαν)
 entity DocumentRequests : cuid, managed {
   requestNumber        : String(50) @mandatory;
-  description          : String(500); // <-- ΑΥΤΟ ΕΛΕΙΠΕ ΚΑΙ ΧΤΥΠΑΓΕ ΤΟ CSV
-  pageCount            : Integer;     // <-- Προσθήκη για να ταιριάζει με το CSV
-  extractionConfidence : Decimal(5,2); // <-- Προσθήκη για να ταιριάζει με το CSV
-  requestDate          : DateTime;    // <-- Προσθήκη για να ταιριάζει με το CSV
+  description          : String(500);
+  requestDate          : DateTime;   
   status               : String(20) default 'Pending'; 
   
   // Associations
   supplier             : Association to Suppliers; 
-  provider             : Association to Providers; // Εσύ ως Admin
+  provider             : Association to Providers; 
   
-  // Σχέση με τα περιεχόμενα (Composition = αν σβηστεί η παραγγελία, σβήνονται και αυτά)
   extractedData        : Composition of many ExtractedData on extractedData.request = $self;
 }
 
@@ -45,7 +42,6 @@ entity ExtractedData : cuid {
   request     : Association to DocumentRequests;
   fieldName   : String(100); // Όνομα προϊόντος/πεδίου
   fieldValue  : String(500); // Τιμή/Ποσότητα
-  confidence  : Decimal(5,2);
 }
 
 entity ExtractionConfirmations : cuid, managed {

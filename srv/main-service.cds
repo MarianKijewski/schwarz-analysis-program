@@ -14,15 +14,13 @@ service SupplierService @(path: '/supplier') {
         else 0 
       end as statusControl : Integer,
       supplier.name as supplierName,
-      extractedData // <--- ΠΡΟΣΒΑΣΗ ΜΟΝΟ ΑΠΟ ΕΔΩ
+      extractedData 
   } actions {
       action confirmExtraction() returns MyConfirmations;
   };
   
   entity MyConfirmations as projection on db.ExtractionConfirmations;
 
-  // ΜΗΝ βάζεις εδώ: entity ExtractedData as projection on db.ExtractedData;
-  // Αν το βάλεις, το Fiori θα προσπαθήσει να το καλέσει απευθείας και θα πάρεις 404.
 }
 
 annotate SupplierService.MyRequests with @odata.draft.enabled;
@@ -34,6 +32,9 @@ service ProviderService @(path: '/provider') {
   entity MyRequests as projection on db.DocumentRequests {
       ID,
       *,
+      supplier.name  as supplierName, 
+      supplier.email as supplierEmail, 
+      supplier.phone as supplierPhone,
       case 
         when status = 'Pending'   then 2
         when status = 'Confirmed' then 3
@@ -45,7 +46,7 @@ service ProviderService @(path: '/provider') {
   } actions {
       action confirmExtraction() returns MyConfirmations;
   };
-  
+
   entity MyConfirmations as projection on db.ExtractionConfirmations; 
   entity ExtractedData as projection on db.ExtractedData;
   entity Suppliers as projection on db.Suppliers;
