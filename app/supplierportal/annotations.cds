@@ -16,19 +16,57 @@ annotate service.MyRequests with @(
     ]
 );
 
+
 annotate service.MyRequests with @(
     UI.Facets : [
-        { $Type : 'UI.ReferenceFacet', ID : 'MainFacet', Label : 'General Info', Target : '@UI.FieldGroup#Details' },
-        { $Type : 'UI.ReferenceFacet', ID : 'ItemsFacet', Label : 'Products', Target : 'extractedData/@UI.LineItem' }
+        {
+            $Type : 'UI.ReferenceFacet', 
+            ID : 'MainFacet', 
+            Label : 'General Info', 
+            Target : '@UI.FieldGroup#Details',
+            // Dodajemy przycisk tutaj w UI.FieldGroup#Details jako DataFieldForAction
+        },
+        { 
+            $Type : 'UI.ReferenceFacet', 
+            ID : 'ItemsFacet', 
+            Label : 'Products', 
+            Target : 'extractedData/@UI.LineItem' 
+        }
     ],
-    UI.FieldGroup #Details : {
+    UI.FieldGroup#Details : {
         $Type : 'UI.FieldGroupType',
         Data : [
+            { 
+                $Type: 'UI.DataFieldForAction', 
+                Action: 'confirmRequest', 
+                Label: 'Confirm', 
+                Criticality: #Positive 
+            },
+            { 
+                $Type: 'UI.DataFieldForAction', 
+                Action: 'rejectRequest', 
+                Label: 'Reject', 
+                Criticality: #Negative 
+            },
             { Value : requestNumber, Label : 'Request Number' },
             { Value : status, Label : 'Status' }
         ]
     }
 );
+
+// annotate service.MyRequests with @(
+//     UI.Facets : [
+//         { $Type : 'UI.ReferenceFacet', ID : 'MainFacet', Label : 'General Info', Target : '@UI.FieldGroup#Details' },
+//         { $Type : 'UI.ReferenceFacet', ID : 'ItemsFacet', Label : 'Products', Target : 'extractedData/@UI.LineItem' }
+//     ],
+//     UI.FieldGroup #Details : {
+//         $Type : 'UI.FieldGroupType',
+//         Data : [
+//             { Value : requestNumber, Label : 'Request Number' },
+//             { Value : status, Label : 'Status' }
+//         ]
+//     }
+// );
 
 annotate service.ExtractedData with @(
     UI.LineItem : [

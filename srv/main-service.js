@@ -26,6 +26,20 @@ module.exports = cds.service.impl(async function() {
             }
         }
     });
+    this.on('confirmRequest', async (req) => {
+        const { ID } = req.data;
+        return UPDATE(MyRequests)
+            .set({ status: 'CONFIRMED' })
+            .where({ ID });
+    });
+
+    // Reject request
+    this.on('rejectRequest', async (req) => {
+        const { ID } = req.data;
+        return UPDATE(MyRequests)
+            .set({ status: 'REJECTED' })
+            .where({ ID });
+    });
     /**
      * ACTION: confirmExtraction
      */

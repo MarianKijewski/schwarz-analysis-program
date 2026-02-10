@@ -17,6 +17,8 @@ service SupplierService @(path: '/supplier') {
       extractedData : redirected to ExtractedData
   } actions {
       action confirmExtraction() returns MyConfirmations;
+      action confirmRequest() returns MyRequests;
+      action rejectRequest() returns MyRequests;
   };
   
   entity ExtractedData as projection on db.ExtractedData;
