@@ -2,8 +2,8 @@ using { cuid, managed } from '@sap/cds/common';
 namespace sap.cap.orders;
 
 entity Orders : cuid, managed {
-  items : Composition of many {
-    key name        : String;
+  Items : Composition of many {
+    key name    : String;
     quantity    : Integer;
     price       : Price;
   }
