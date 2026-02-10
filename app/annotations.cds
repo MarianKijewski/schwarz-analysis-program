@@ -34,14 +34,14 @@ annotate ReviewService.Orders with @(
       },
       {
         $Type: 'UI.ReferenceFacet',
-        Label: 'items',
-        Target: 'items/@UI.LineItem'
+        Label: 'Items',
+        Target: 'Items/@UI.LineItem'
       }
     ]
   }
 );
 
-annotate ReviewService.Orders.items with @(
+annotate ReviewService.Items with @(
   UI: {
     LineItem: [
       {

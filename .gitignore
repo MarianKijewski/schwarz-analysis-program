@@ -1,3 +1,5 @@
+.env
+
 # CAP schwarz-analysis-program
 _out
 *.db
@@ -26,9 +28,9 @@ mta_archives/
 *.iml
 *.flattened-pom.xml
 
- IDEs
- .vscode
- .idea
+IDEs
+.vscode
+.idea
 
 # @cap-js/cds-typer
 @cds-models
