@@ -28,8 +28,7 @@ entity DocumentRequests : cuid, managed {
   requestNumber        : String(50) @mandatory;
   description          : String(500);
   requestDate          : DateTime;   
-  status               : String(20) default 'Pending'; 
-  
+  status               : Status default 'Draft';
   // Associations
   supplier             : Association to Suppliers; 
   provider             : Association to Providers; 
@@ -47,6 +46,16 @@ entity ExtractionConfirmations : cuid, managed {
   request       : Association to DocumentRequests;
   confirmedBy   : String(100);
   confirmedDate : DateTime;
-  status        : String(20) default 'Pending';
+  status        : Status default 'Draft';
   notes         : String(1000);
+}
+
+type Status: String enum {
+  Draft;
+  Pending;
+  Received;
+  Rejected;
+  Accepted;
+  Expired;
+  Edited;
 }

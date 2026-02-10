@@ -5,6 +5,27 @@ module.exports = cds.service.impl(async function() {
     // Ορισμός των entities από το service
     const { MyRequests, MyConfirmations, ExtractedData } = this.entities;
 
+    this.after('READ', 'MyRequests', async (data, req) => {
+        if (!data) return;
+
+        const rows = Array.isArray(data) ? data : [data];
+
+        for (const row of rows) {
+            if (row.status === 'Pending') {
+                await UPDATE(MyRequests).set({
+                    status: 'Received',
+                    receivedAt: new Date().toISOString()
+                }).where({ ID: row.ID });
+
+                await INSERT.into(MyConfirmations).entries({
+                    request_ID: row.ID,
+                    action: 'Received',
+                    actedBy: req.user?.id || 'Supplier',
+                    actedAt: new Date().toISOString()
+                });
+            }
+        }
+    });
     /**
      * ACTION: confirmExtraction
      */
@@ -30,7 +51,10 @@ module.exports = cds.service.impl(async function() {
         if (!orderData) return req.error(404, `Request ${requestId} not found`);
 
         // 2. Ενημέρωση Βάσης
-        await UPDATE(MyRequests).set({ status: 'Confirmed' }).where({ ID: requestId });
+        // await UPDATE `MyRequests` .set `status = ${Status.Received}` .where(orderId)
+        // await UPDATE(MyRequests).set .where({ ID: requestId });
+        await UPDATE(MyRequests).set({ status: 'Pending' }).where({ ID: requestId });
+
 
         await INSERT.into(MyConfirmations).entries({
             request_ID: requestId,
@@ -51,7 +75,14 @@ module.exports = cds.service.impl(async function() {
         // 4. Δημιουργία Link και Λίστας
         // const portalLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/com.schwarz.supplierportal/test/flp.html?sap-ui-xx-viewCache=false#app-preview&/?sap-iapp-state=TAS0H8IILD832D83PKH6OXMZ01FLND8CGAX04U0E1`;
 
-        const portalLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/com.schwarz.supplierportal/test/flp.html#app-preview&/MyRequests(ID='${requestId}',IsActiveEntity=true)`;
+            const protocol = req.headers['x-forwarded-proto'] || 'http';
+            const host = req.headers['x-forwarded-host'] || req.headers.host;
+
+            const basePath = req._.req.baseUrl || '';
+
+            const portalLink = `${protocol}://${host}${basePath}` + `/com.schwarz.supplierportal/test/flp.html` + `#app-preview&/MyRequests(ID='${requestId}',IsActiveEntity=true)`;
+
+        // const portalLink = `https://port4004-workspaces-ws-h7mxz.eu30.applicationstudio.cloud.sap/com.schwarz.supplierportal/test/flp.html#app-preview&/MyRequests(ID='${requestId}',IsActiveEntity=true)`;
        
         const productList = (items && items.length > 0) 
             ? items.map(i => `<li><b>${i.fieldName}:</b> ${i.fieldValue}</li>`).join('') 
