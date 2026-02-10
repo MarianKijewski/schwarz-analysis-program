@@ -33,7 +33,6 @@ entity DocumentRequests : cuid, managed {
   // Associations
   supplier             : Association to Suppliers; 
   provider             : Association to Providers; 
-  
   extractedData        : Composition of many ExtractedData on extractedData.request = $self;
 }
 

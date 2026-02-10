@@ -14,11 +14,12 @@ service SupplierService @(path: '/supplier') {
         else 0 
       end as statusControl : Integer,
       supplier.name as supplierName,
-      extractedData 
+      extractedData : redirected to ExtractedData
   } actions {
       action confirmExtraction() returns MyConfirmations;
   };
   
+  entity ExtractedData as projection on db.ExtractedData;
   entity MyConfirmations as projection on db.ExtractionConfirmations;
 
 }

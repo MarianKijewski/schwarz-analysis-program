@@ -33,13 +33,11 @@ annotate service.MyRequests with @(
 annotate service.ExtractedData with @(
     UI.LineItem : [
         { Value : fieldName, Label : 'Product / Field' },
-        { Value : fieldValue, Label : 'Value / Quantity' },
-        { Value : confidence, Label : 'Confidence Score' }
+        { Value : fieldValue, Label : 'Value / Quantity' }
     ]
 );
 
 annotate service.ExtractedData with {
     fieldName  @Common.FieldControl : #Mandatory;
     fieldValue @Common.FieldControl : #Optional;
-    confidence @readonly;
 };
