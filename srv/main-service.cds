@@ -9,6 +9,7 @@ service SupplierService @(path: '/supplier') {
       *,
       case 
         when status = 'Pending' then 2
+        when status = 'Recived' then 2
         when status = 'Confirmed' then 3
         when status = 'Rejected' then 1
         else 0 
@@ -17,6 +18,7 @@ service SupplierService @(path: '/supplier') {
       extractedData : redirected to ExtractedData
   } actions {
       action confirmExtraction() returns MyConfirmations;
+      action markAsReceived() returns MyRequests;
       action confirmRequest() returns MyRequests;
       action rejectRequest() returns MyRequests;
   };
