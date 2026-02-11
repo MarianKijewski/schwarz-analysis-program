@@ -7,15 +7,8 @@ module.exports = cds.service.impl(async function() {
 
 
     this.on('READ', 'MyRequests', async (req, next) => {
-    // 1. Check if we are requesting a specific record (Single ID)
-    // In CAP, single record requests populate req.params
     const requestId = req.params[0]?.ID || req.params[0];
-
-    // If there is no specific ID, it's a list request. 
-    // We let the default handler take care of it.
     if (!requestId) return next();
-
-    // 2. Perform the Update (Side Effect)
     // We update the status to 'Received' because the user is viewing the details
     await UPDATE(MyRequests)
         .set({ 
@@ -24,47 +17,35 @@ module.exports = cds.service.impl(async function() {
         })
         .where({ ID: requestId })
         .and({ status: 'Pending' }); // Only update if it was 'Pending'
-
-    // 3. Optional: Insert into MyConfirmations (as per your previous logic)
-    // This provides the audit trail you had before
     await INSERT.into(MyConfirmations).entries({
         request_ID: requestId,
         action: 'Received',
         actedBy: req.user?.id || 'Supplier',
         actedAt: new Date().toISOString()
     });
-
-    // 4. Fetch the data with expanded associations
-    // This matches your 'Orders' example where you expand items
     const result = await SELECT.one.from(MyRequests)
         .where({ ID: requestId })
         .columns(req => {
-            req`*`,                            // All fields from MyRequests
-            req.extractedData(items => {      // Expand the ExtractedData association
+            req`*`,
+            req.extractedData(items => {
                 items.fieldName, 
                 items.fieldValue
             }),
-            req.supplier(s => { s.name })     // Expand Supplier name
+            req.supplier(s => { s.name })
         });
-
     if (!result) {
         return req.error(404, `Request ${requestId} not found`);
     }
-
-    // 5. Return the record to the UI
     return result;
 });
-// Change this:
     this.on('confirmRequest', async (req) => {
-    // For bound actions, the ID is usually in req.params
         const requestId = req.params[0].ID; 
         const { status } = await SELECT.one.from(MyRequests).where({ ID: requestId });
-        if (status === 'Recived' || status === 'Edited') {
+        if (status === 'Received' || status === 'Edited') {
             return UPDATE(MyRequests)
             .set({ status: 'Confirmed' }) 
             .where({ ID: requestId }); }
     });
-
     this.on('rejectRequest', async (req) => {
         const requestId = req.params[0].ID;
     
@@ -72,17 +53,12 @@ module.exports = cds.service.impl(async function() {
             .set({ status: 'Rejected' })
             .where({ ID: requestId });
     });
-    
     this.on('UPDATE', async (req) => {
     const requestId = req.params[0].ID;
     await UPDATE(MyRequests)
         .set({ status: 'Edited' })
         .where({ ID: requestId })
-        // .and({ status: { 'in': ['Received', 'Pending'] } });
 });
-    /**
-     * ACTION: confirmExtraction
-     */
     this.on('confirmExtraction', 'MyRequests', async (req) => {
         const requestId = req.params[0]?.ID || req.params[0] || req.data?.ID;
         

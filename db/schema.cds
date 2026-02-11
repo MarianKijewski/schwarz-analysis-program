@@ -29,6 +29,7 @@ entity DocumentRequests : cuid, managed {
   description          : String(500);
   requestDate          : DateTime;   
   status               : Status default 'Draft';
+  viewCount            : Integer default 0;
   // Associations
   supplier             : Association to Suppliers; 
   provider             : Association to Providers; 
