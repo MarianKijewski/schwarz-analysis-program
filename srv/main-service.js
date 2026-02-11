@@ -58,10 +58,11 @@ module.exports = cds.service.impl(async function() {
     this.on('confirmRequest', async (req) => {
     // For bound actions, the ID is usually in req.params
         const requestId = req.params[0].ID; 
-    
-        return UPDATE(MyRequests)
-            .set({ status: 'Confirmed' }) // Note: Use 'Confirmed' to match your CASE logic
-            .where({ ID: requestId });
+        const { status } = await SELECT.one.from(MyRequests).where({ ID: requestId });
+        if (status === 'Recived' || status === 'Edited') {
+            return UPDATE(MyRequests)
+            .set({ status: 'Confirmed' }) 
+            .where({ ID: requestId }); }
     });
 
     this.on('rejectRequest', async (req) => {
@@ -71,6 +72,14 @@ module.exports = cds.service.impl(async function() {
             .set({ status: 'Rejected' })
             .where({ ID: requestId });
     });
+    
+    this.on('UPDATE', async (req) => {
+    const requestId = req.params[0].ID;
+    await UPDATE(MyRequests)
+        .set({ status: 'Edited' })
+        .where({ ID: requestId })
+        // .and({ status: { 'in': ['Received', 'Pending'] } });
+});
     /**
      * ACTION: confirmExtraction
      */
@@ -100,7 +109,7 @@ module.exports = cds.service.impl(async function() {
         // await UPDATE(MyRequests).set .where({ ID: requestId });
         await UPDATE(MyRequests).set({ status: 'Pending' }).where({ ID: requestId });
 
-
+    
         await INSERT.into(MyConfirmations).entries({
             request_ID: requestId,
             confirmedBy: req.user.id || 'Admin',
