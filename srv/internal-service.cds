@@ -2,6 +2,7 @@ using { com.schwarz.app as db } from '../db/schema';
 
 service InternalService @(path: '/internal') {
   entity Documents as projection on db.Documents;
+  entity DocumentRecords as projection on db.DocumentRecords;
 //   @readonly
 //   entity Providers as projection on db.Providers;
 //
