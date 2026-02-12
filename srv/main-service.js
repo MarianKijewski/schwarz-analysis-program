@@ -48,17 +48,15 @@ module.exports = cds.service.impl(async function() {
     });
     this.on('rejectRequest', async (req) => {
         const requestId = req.params[0].ID;
-    
+        const { status } = await SELECT.one.from(MyRequests).where({ ID: requestId });
+        if (status === 'Received' || status === 'Edited') {
         return UPDATE(MyRequests)
             .set({ status: 'Rejected' })
-            .where({ ID: requestId });
+            .where({ ID: requestId }); }
     });
-    this.on('UPDATE', async (req) => {
-    const requestId = req.params[0].ID;
-    await UPDATE(MyRequests)
-        .set({ status: 'Edited' })
-        .where({ ID: requestId })
-});
+    this.before('UPDATE', 'MyRequests', (req) => {
+    req.data.status = 'Edited';
+    });
     this.on('confirmExtraction', 'MyRequests', async (req) => {
         const requestId = req.params[0]?.ID || req.params[0] || req.data?.ID;
         
