@@ -1,4 +1,6 @@
 using InternalService as service from '../../srv/internal-service';
+using from '../../db/schema';
+
 annotate service.Documents with @(
     UI.FieldGroup #GeneratedGroup : {
         $Type : 'UI.FieldGroupType',
@@ -16,6 +18,12 @@ annotate service.Documents with @(
             ID : 'GeneratedFacet1',
             Label : 'General Information',
             Target : '@UI.FieldGroup#GeneratedGroup',
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : 'Records',
+            ID : 'Records',
+            Target : 'Records/@UI.LineItem#Records',
         },
     ],
     UI.LineItem : [
@@ -53,4 +61,19 @@ annotate service.Documents with {
         ],
     }
 };
+
+annotate service.DocumentRecords with @(
+    UI.LineItem #Records : [
+        {
+            $Type : 'UI.DataField',
+            Value : name,
+            Label : 'name',
+        },
+        {
+            $Type : 'UI.DataField',
+            Value : quantity,
+            Label : 'quantity',
+        },
+    ]
+);
 

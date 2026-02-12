@@ -22,6 +22,7 @@
   ],
   "sapux": [
     "app/supplierportal",
-    "app/provider-portal"
+    "app/provider-portal",
+    "app/documents"
   ]
 }

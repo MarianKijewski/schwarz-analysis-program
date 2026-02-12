@@ -5,3 +5,4 @@ service InternalService {
   @readonly
   entity Recipients as projection on db.Users;
 }
+annotate InternalService.Documents with @odata.draft.enabled; 
