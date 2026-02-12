@@ -4,6 +4,7 @@ using { com.schwarz.app as db } from '../db/schema';
 service SupplierService @(path: '/supplier') {
   @readonly entity Suppliers as projection on db.Suppliers;
   
+  action verifyPasscode(supplierID: UUID, passcode: String) returns Boolean;
   entity MyRequests as projection on db.DocumentRequests {
       ID,
       *,
