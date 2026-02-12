@@ -9,13 +9,14 @@ entity Users : cuid, managed {
 }
 
 entity Documents : cuid, managed {
-  status               : Status default 'Draft';
-  extractedData        : Composition of many DocumentRecords;
+  status    : Status default 'Draft';
+  Records   : Composition of many DocumentRecords on Records.parent = $self;
 }
 
 entity DocumentRecords : cuid {
-  name      : String;
-  quantity  : Integer;
+  key parent  : Association to Documents;
+  key name    : String;
+  quantity    : Integer;
 }
 
 type Status: String enum {
