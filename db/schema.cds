@@ -9,6 +9,7 @@ entity Suppliers : cuid, managed {
   phone       : String(20);
   status      : String(20) default 'Active';
   provider    : String(100);
+  passcode    : String(6);
   // Σύνδεση με παραγγελίες
   requests    : Association to many DocumentRequests on requests.supplier = $self;
 }

@@ -1,0 +1,5 @@
+.portalLocked {
+    filter: blur(15px) grayscale(100%) !important;
+    pointer-events: none !important;
+    transition: filter 0.5s ease;
+}
