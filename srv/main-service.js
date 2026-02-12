@@ -318,10 +318,6 @@ module.exports = cds.service.impl(async function() {
                     </div>
 
                     <hr style="border: 0; border-top: 1px solid #eee;">
-                    <p><b>Preview of Extracted Data:</b></p>
-                    <ul>${productList}</ul>
-                    <br>
-                    <p style="font-size: 0.8em; color: #666;">Secure Access Link: <br> ${portalLink}</p>
                 </div>
             `
         };

@@ -48,9 +48,6 @@
     "extends": {
       "extensions": {
         "sap.ui.controllerExtensions": {
-          "sap.fe.templates.ListReport.ListReportController": {
-            "controllerName": "com.schwarz.supplierportal.ext.controller.ListReportExt"
-          },
           "sap.fe.templates.ObjectPage.ObjectPageController": {
             "controllerName": "com.schwarz.supplierportal.ext.controller.ObjectPageExt"
           }

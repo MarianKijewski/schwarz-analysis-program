@@ -32,7 +32,7 @@ sap.ui.define([
                 state: "Warning",
                 content: new VBox({
                     items: [
-                        new Text({ text: "Εισάγετε τον κωδικό πρόσβασης για να δείτε τα στοιχεία:" }),
+                        new Text({ text: "Enter your passcode so to see the order details:" }),
                         new Input("passcodeInput", { type: "Password", placeholder: "Passcode..." })
                     ]
                 }),
@@ -69,11 +69,11 @@ sap.ui.define([
                     this._oDialog.close();
                     this._oDialog.destroy();
                 } else {
-                    MessageBox.error("Λάθος κωδικός πρόσβασης.");
+                    MessageBox.error("Wrong Passcode");
                 }
             }.bind(this)).catch(function (err) {
                 BusyIndicator.hide();
-                MessageBox.error("Σφάλμα σύνδεσης: " + err.message);
+                MessageBox.error("Connnection error: " + err.message);
             });
         }
     });
