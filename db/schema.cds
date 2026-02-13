@@ -9,9 +9,10 @@ entity Users : cuid {
 }
 
 entity Documents : cuid, managed {
-  recipient : Association to Users;
+  recipient           : Association to Users;
   @readonly status    : Status default 'Draft';
-  Records   : Composition of many DocumentRecords on Records.parent = $self;
+  deliveryDate        : Timestamp;
+  Records             : Composition of many DocumentRecords on Records.parent = $self;
 }
 
 entity DocumentRecords : cuid {

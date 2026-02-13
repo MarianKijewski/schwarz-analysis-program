@@ -7,8 +7,18 @@ annotate service.Documents with @(
         Data : [
             {
                 $Type : 'UI.DataField',
-                Label : 'status',
+                Label : '{i18n>Status}',
                 Value : status,
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : createdAt,
+                Label : '{i18n>DateOfIssue}',
+            },
+            {
+                $Type : 'UI.DataField',
+                Value : deliveryDate,
+                Label : '{i18n>DeliveryDate}',
             },
         ],
     },
@@ -30,12 +40,12 @@ annotate service.Documents with @(
         {
             $Type : 'UI.DataField',
             Value : recipient.name,
-            Label : 'name',
+            Label : '{i18n>CompanyName}',
         },
         {
             $Type : 'UI.DataField',
             Value : status,
-            Label : 'status',
+            Label : 'Status',
         },
     ],
 );
@@ -67,12 +77,12 @@ annotate service.DocumentRecords with @(
         {
             $Type : 'UI.DataField',
             Value : name,
-            Label : 'name',
+            Label : '{i18n>Name}',
         },
         {
             $Type : 'UI.DataField',
             Value : quantity,
-            Label : 'quantity',
+            Label : '{i18n>Quantity}',
         },
     ]
 );
