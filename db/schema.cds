@@ -10,13 +10,13 @@ entity Users : cuid {
 
 entity Documents : cuid, managed {
   recipient : Association to Users;
-  status    : Status default 'Draft';
+  @readonly status    : Status default 'Draft';
   Records   : Composition of many DocumentRecords on Records.parent = $self;
 }
 
 entity DocumentRecords : cuid {
   key parent  : Association to Documents;
-  name    : String;
+  name        : String;
   quantity    : Integer;
 }
 
