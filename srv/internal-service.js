@@ -7,12 +7,18 @@ class InternalService extends cds.ApplicationService {
 
     this.before("UPDATE", Documents, (req) => this.onUpdate(req));
 
-    this.on ('sendEmail', async req => {
-      let { document, recipient } = req.data
+    this.on ('sendEmail', Documents, async req => {
+      const [ ID ] = req.params;
+
+      const recipient = SELECT.from('Documents', d => {
+        d.recipient (r => r.email)
+      }).where(ID)
+      const content = ID.ID
+
       if (!recipient) return req.error (400, `recipient has to be set`)
       console.log(`sending ${document} to ${recipient} via email`)
 
-      email.sendEmail(document, recipient)
+      email.sendEmail(content, recipient)
     })
 
     return super.init();

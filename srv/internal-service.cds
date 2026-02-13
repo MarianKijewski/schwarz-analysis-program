@@ -5,6 +5,6 @@ service InternalService {
   @readonly
   entity Recipients as projection on db.Users;
 
-  action sendEmail(document: Documents:ID, recipient: Recipients:email);
+  action sendEmail();
 }
 annotate InternalService.Documents with @odata.draft.enabled; 
