@@ -1,0 +1,7 @@
+POST http://localhost:4004/internal/sendEmail
+Content-Type: application/json
+
+{
+  "document": "random-uuid-1231",
+  "recipient": "example@gmail.com"
+}
