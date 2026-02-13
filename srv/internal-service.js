@@ -2,7 +2,10 @@ const cds = require('@sap/cds')
 const email = require('./aws-ses');
 class InternalService extends cds.ApplicationService {
   init() {
-    this.before("UPDATE", "Documents", (req) => this.onUpdate(req));
+
+    const { Documents } = this.entities
+
+    this.before("UPDATE", Documents, (req) => this.onUpdate(req));
 
     this.on ('sendEmail', async req => {
       let { document, recipient } = req.data
@@ -16,8 +19,8 @@ class InternalService extends cds.ApplicationService {
   }
 
   async onUpdate (req) {
-    let draft = await SELECT.one(1) .from (req.subject) .where `status != 'Draft'`
-    if (!draft) req.reject `Can't modify final document!`
+    let final = await SELECT.one(1) .from (req.subject) .where `status != 'Draft'`
+    if (final) req.reject `Can't modify final document!`
   }
 }
 
